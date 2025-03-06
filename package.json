@@ -1,0 +1,26 @@
+{
+  "name": "module-generator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/bin/index.ts",
+    "prepare": "npm run build"
+  },
+  "bin": {
+    "generate-module": "./dist/bin/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "commander": "^13.1.0",
+    "inquirer": "^12.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.8.2"
+  }
+}
