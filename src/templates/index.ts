@@ -1,19 +1,17 @@
 export const createDto = `
-import { AutoMap } from '@automapper/classes';
 export class Create!module!Dto {
 }
 `;
 export const updateDto = `
 import { PartialType } from '@nestjs/swagger';
-import { Create!module!Dto } from './create-<module>.dto';
+import { Create!module!Dto } from './create-<parent>.dto';
 export class Update!module!Dto extends PartialType(Create!module!Dto) {}
 `;
 export const entity = `
-import { AutoMap } from '@automapper/classes';
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { Entity } from 'typeorm';
 
-@Entity('<module>s', { schema: 'public' })
+@Entity('<entity>', { schema: 'public' })
 export class !module! extends BaseEntity {
 }
 `;
@@ -26,8 +24,8 @@ export const mapping = `
 import { createMap, Mapper, MappingProfile } from '@automapper/core';
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
-import { Create!module!Dto } from '../dto/create-<module>.dto';
-import { !module! } from '../entities/-<module>s.entity';
+import { Create!module!Dto } from '../dto/create-<parent>.dto';
+import { !module! } from '../entities/<parent>.entity';
 
 @Injectable()
 export class !module!MappingProfile extends AutomapperProfile {
@@ -53,8 +51,8 @@ import { PaginationDto } from 'src/common/dtos/request/pagination.dto';
 import { PagedList } from 'src/common/types/paged-list';
 import { Repository } from 'typeorm';
 import { AppContext } from '../../../common/interfaces/context';
-import { !module! } from '../entities/-<module>s.entity';
-import { I!module!Repository } from './interface/<module>-repository.interface';
+import { !module! } from '../entities/<parent>.entity';
+import { I!module!Repository } from './interface/<parent>-repository.interface';
 
 @Injectable()
 export class !module!Repository
@@ -86,7 +84,7 @@ export const repositoryInterface = `
 import { IBaseRepository } from 'src/common/database/repositories/interfaces/base.interface';
 import { PaginationDto } from 'src/common/dtos/request/pagination.dto';
 import { PagedList } from 'src/common/types/paged-list';
-import { !module! } from '../../entities/-<module>s.entity';
+import { !module! } from '../../entities/<parent>.entity';
 import { AppContext } from '../../../../common/interfaces/context';
 
 export const I!module!Repository = Symbol(
@@ -104,22 +102,19 @@ export interface I!module!Repository<T = DefaultEntity>
 `;
 
 export const controller = `
-import { Controller, Get, Inject, Query, UseGuards } from '@nestjs/common';
+import { Controller, Inject, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { DOMAIN_ENTITY, JWT, X_API_KEY } from 'src/common/constants';
 import { ApiKeyGuard } from 'src/common/guards/api-key.guard';
 import { AuthGuard } from '../../common/guards/auth.guard';
-import { AppContext } from '../../common/interfaces/context';
-import { I!module!Service } from './interfaces/-<module>.interface';
-import { Context } from '../../common/decorators/context';
-import { PaginationDto } from '../../common/dtos/request/pagination.dto';
+import { I!module!Service } from './interfaces/<parent>.interface';
 
 @ApiTags(DOMAIN_ENTITY.NOTIFICATIONS)
 @ApiBearerAuth(X_API_KEY)
 @UseGuards(ApiKeyGuard)
 @ApiBearerAuth(JWT)
 @UseGuards(AuthGuard)
-@Controller('<module>')
+@Controller('<paren>')
 export class !module!Controller {
   constructor(
     @Inject(I!module!Service)
@@ -163,13 +158,13 @@ export class !module!Controller {
 export const moduleContent = `
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { !module! } from './entities/-<module>s.entity';
-import { I!module!Service } from './interfaces/-<module>.interface';
-import { !module!MappingProfile } from './mapping/<module>.mapping';
-import { !module!Controller } from './<module>.controller';
-import { I!module!Repository } from './repositories/interface/<module>-repository.interface';
-import { !module!Repository } from './repositories/<module>.repository';
-import { !module!Service } from './<module>.service';
+import { !module! } from './entities/<parent>.entity';
+import { I!module!Service } from './interfaces/<parent>.interface';
+import { !module!MappingProfile } from './mapping/<parent>.mapping';
+import { !module!Controller } from './<parent>.controller';
+import { I!module!Repository } from './repositories/interface/<parent>-repository.interface';
+import { !module!Repository } from './repositories/<parent>.repository';
+import { !module!Service } from './<parent>.service';
 
 const <module>Entities = [!module!];
 const <module>RepositoryProvider = [
@@ -200,17 +195,14 @@ export const service = `
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Inject, Injectable } from '@nestjs/common';
-import { MoreThanOrEqual } from 'typeorm';
 import { RESPONSE_MESSAGES } from '../../common/constants';
-import { NOTIFICATION_TYPE } from '../../common/constants/enums';
-import { FindOptionsBuilder } from '../../common/database/builder-pattern/find-options.builder';
 import { PaginationDto } from '../../common/dtos/request/pagination.dto';
 import { AppContext } from '../../common/interfaces/context';
-import { Create!module!Dto } from './dto/create-<module>.dto';
-import { Update!module!Dto } from './dto/update-<module>.dto';
-import { !module! } from './entities/-<module>s.entity';
-import { I!module!Service } from './interfaces/-<module>.interface';
-import { I!module!Repository } from './repositories/interface/<module>-repository.interface';
+import { Create!module!Dto } from './dto/create-<parent>.dto';
+import { Update!module!Dto } from './dto/update-<parent>.dto';
+import { !module! } from './entities/<parent>.entity';
+import { I!module!Service } from './interfaces/<parent>.interface';
+import { I!module!Repository } from './repositories/interface/<parent>-repository.interface';
 
 @Injectable()
 export class !module!Service implements I!module!Service {
