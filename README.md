@@ -5,8 +5,8 @@ This tool generates a module based on the Repository Pattern and includes an Aut
 ## Installation
 Clone the repository:
 ```
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/SufianAmritm/module-generator-boiler.git
+cd module-generator-boiler
 ```
 
 Install dependencies:
